@@ -1,6 +1,6 @@
 {
-  "name": "projj",
-  "version": "2.1.0",
+  "name": "@ying-bin/projj",
+  "version": "0.0.1",
   "description": "Manage repository easily.",
   "dependencies": {
     "chalk": "^3.0.0",
