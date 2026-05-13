@@ -48,6 +48,7 @@ describe('test/projj_import.test.js', () => {
 
   describe('when origin url is unknown', () => {
     before(function* () {
+      yield rimraf(path.join(repo, '.git'));
       yield runscript('git init && git remote add origin https://unknown.com/popomore/projj.git', {
         cwd: repo,
       });
@@ -65,6 +66,7 @@ describe('test/projj_import.test.js', () => {
 
   describe('when no origin url', () => {
     before(function* () {
+      yield rimraf(path.join(repo, '.git'));
       yield runscript('git init', {
         cwd: repo,
       });
@@ -81,13 +83,14 @@ describe('test/projj_import.test.js', () => {
 
   describe('when target exists', () => {
     before(function* () {
+      yield rimraf(path.join(repo, '.git'));
       yield runscript('git init && git remote add origin https://github.com/popomore/projj.git', {
         cwd: repo,
       });
     });
     before(() => mkdirp(target));
 
-    it('should ignore', function* () {
+    itWithNetwork('should ignore', function* () {
       yield coffee.fork(binfile, [ 'import', path.join(fixtures, 'importdir') ])
       // .debug()
         .expect('stdout', /importing repository https:\/\/github.com\/popomore\/projj.git/)
