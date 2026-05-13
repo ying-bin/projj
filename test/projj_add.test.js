@@ -13,11 +13,13 @@ const tmp = path.join(fixtures, 'tmp');
 
 describe('test/projj_add.test.js', () => {
 
+  const itWithNetwork = process.env.CI ? it.skip : it;
+
   afterEach(mm.restore);
   beforeEach(() => rimraf(tmp));
   afterEach(() => rimraf(tmp));
 
-  it('should add a git repo', done => {
+  itWithNetwork('should add a git repo', done => {
     const home = path.join(fixtures, 'base-tmp');
     const cachePath = path.join(home, '.projj/cache.json');
     const repo = 'https://github.com/popomore/projj.git';
@@ -47,7 +49,7 @@ describe('test/projj_add.test.js', () => {
       });
   });
 
-  it('should add a git repo with alias', done => {
+  itWithNetwork('should add a git repo with alias', done => {
     const home = path.join(fixtures, 'alias');
     const cachePath = path.join(home, '.projj/cache.json');
     const repo = 'github://popomore/projj';
@@ -70,7 +72,7 @@ describe('test/projj_add.test.js', () => {
       });
   });
 
-  it('should throw when target exists', function* () {
+  itWithNetwork('should throw when target exists', function* () {
     const home = path.join(fixtures, 'base-tmp');
     const repo = 'https://github.com/popomore/projj.git';
     const target = path.join(tmp, 'github.com/popomore/projj');
@@ -85,7 +87,7 @@ describe('test/projj_add.test.js', () => {
       .end();
   });
 
-  it('should run hook', done => {
+  itWithNetwork('should run hook', done => {
     const home = path.join(fixtures, 'hook-add');
     const repo = 'https://github.com/popomore/test.git';
     const target = path.join(tmp, 'github.com/popomore/test');
@@ -94,7 +96,7 @@ describe('test/projj_add.test.js', () => {
     // .debug()
       .expect('stdout', new RegExp(`pre hook, cwd ${process.cwd()}`))
       .expect('stdout', new RegExp(`post hook, cwd ${target}`))
-      .expect('stdout', /pre hook, get package name projj/)
+      .expect('stdout', /pre hook, get package name @ying-bin\/projj/)
       .expect('stdout', /post hook, get package name spm-bump/)
       .expect('code', 0)
       .end(done);
@@ -134,7 +136,7 @@ describe('test/projj_add.test.js', () => {
       .end(done);
   });
 
-  it('should add a git repo when multiple directory', function* () {
+  itWithNetwork('should add a git repo when multiple directory', function* () {
     const home = path.join(fixtures, 'multiple-directory');
     const repo = 'https://github.com/popomore/projj.git';
     const target = path.join(home, 'a/github.com/popomore/projj');

@@ -18,6 +18,8 @@ const target = path.join(tmp, 'github.com/popomore/projj');
 
 describe('test/projj_import.test.js', () => {
 
+  const itWithNetwork = process.env.CI ? it.skip : it;
+
   beforeEach(() => {
     mm(process.env, 'HOME', home);
   });
@@ -32,7 +34,7 @@ describe('test/projj_import.test.js', () => {
       });
     });
 
-    it('should import from it', function* () {
+    itWithNetwork('should import from it', function* () {
       yield coffee.fork(binfile, [ 'import', path.join(fixtures, 'importdir') ])
       // .debug()
         .expect('stdout', /importing repository https:\/\/github.com\/popomore\/projj.git/)
@@ -51,7 +53,7 @@ describe('test/projj_import.test.js', () => {
       });
     });
 
-    it('should fail to clone', function* () {
+    itWithNetwork('should fail to clone', function* () {
       yield coffee.fork(binfile, [ 'import', path.join(fixtures, 'importdir') ])
       // .debug()
         .expect('stdout', /importing repository https:\/\/unknown.com\/popomore\/projj.git/)
@@ -127,7 +129,7 @@ describe('test/projj_import.test.js', () => {
       yield rimraf(cacheFile);
     });
 
-    it('should import from it', function* () {
+    itWithNetwork('should import from it', function* () {
       yield coffee.fork(binfile, [ 'import', '--cache' ])
         // .debug()
         .expect('stdout', /importing repository https:\/\/github.com\/popomore\/projj.git/)
