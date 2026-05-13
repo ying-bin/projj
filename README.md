@@ -3,24 +3,15 @@
 Manage repository easily.
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
-[![Test coverage][codecov-image]][codecov-url]
-[![David deps][david-image]][david-url]
-[![Known Vulnerabilities][snyk-image]][snyk-url]
+[![CI Status][ci-image]][ci-url]
 [![npm download][download-image]][download-url]
 
-[npm-image]: https://img.shields.io/npm/v/projj.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/projj
-[travis-image]: https://img.shields.io/travis/popomore/projj.svg?style=flat-square
-[travis-url]: https://travis-ci.org/popomore/projj
-[codecov-image]: https://codecov.io/gh/popomore/projj/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/popomore/projj
-[david-image]: https://img.shields.io/david/popomore/projj.svg?style=flat-square
-[david-url]: https://david-dm.org/popomore/projj
-[snyk-image]: https://snyk.io/test/npm/projj/badge.svg?style=flat-square
-[snyk-url]: https://snyk.io/test/npm/projj
-[download-image]: https://img.shields.io/npm/dm/projj.svg?style=flat-square
-[download-url]: https://npmjs.org/package/projj
+[npm-image]: https://img.shields.io/npm/v/@ying-bin/projj.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/@ying-bin/projj
+[ci-image]: https://github.com/ying-bin/projj/actions/workflows/nodejs.yml/badge.svg
+[ci-url]: https://github.com/ying-bin/projj/actions/workflows/nodejs.yml
+[download-image]: https://img.shields.io/npm/dm/@ying-bin/projj.svg?style=flat-square
+[download-url]: https://npmjs.org/package/@ying-bin/projj
 
 ## Why?
 

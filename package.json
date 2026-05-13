@@ -1,6 +1,6 @@
 {
   "name": "@ying-bin/projj",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Manage repository easily.",
   "dependencies": {
     "chalk": "^3.0.0",
@@ -51,8 +51,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:popomore/projj.git"
+    "url": "git@github.com:ying-bin/projj.git"
   },
-  "author": "popomore <sakura9515@gmail.com>",
+  "author": "Nemo <yingbin.jiang@outlook.com>",
   "license": "MIT"
 }
