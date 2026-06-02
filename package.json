@@ -18,23 +18,15 @@
   },
   "devDependencies": {
     "autod": "^3.1.0",
-    "coffee": "^5.2.2",
-    "egg-bin": "^4.14.1",
-    "egg-ci": "^1.13.1",
     "eslint": "^6.8.0",
-    "eslint-config-egg": "^8.0.1",
-    "mm": "^2.5.0"
+    "eslint-config-egg": "^8.0.1"
   },
   "engines": {
     "node": ">=10.0.0"
   },
   "scripts": {
     "autod": "autod",
-    "lint": "eslint .",
-    "test": "npm run lint -- --fix && npm run test-local",
-    "test-local": "egg-bin test",
-    "cov": "egg-bin cov",
-    "ci": "npm run lint && npm run cov"
+    "lint": "eslint ."
   },
   "ci": {
     "version": "10, 12",

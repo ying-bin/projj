@@ -3,13 +3,13 @@
 Manage repository easily.
 
 [![NPM version][npm-image]][npm-url]
-[![CI Status][ci-image]][ci-url]
+[![Release Status][release-image]][release-url]
 [![npm download][download-image]][download-url]
 
 [npm-image]: https://img.shields.io/npm/v/@ying-bin/projj.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/@ying-bin/projj
-[ci-image]: https://github.com/ying-bin/projj/actions/workflows/nodejs.yml/badge.svg
-[ci-url]: https://github.com/ying-bin/projj/actions/workflows/nodejs.yml
+[release-image]: https://github.com/ying-bin/projj/actions/workflows/release.yml/badge.svg
+[release-url]: https://github.com/ying-bin/projj/actions/workflows/release.yml
 [download-image]: https://img.shields.io/npm/dm/@ying-bin/projj.svg?style=flat-square
 [download-url]: https://npmjs.org/package/@ying-bin/projj
 
@@ -44,10 +44,10 @@ And you can `DO` everything in repository by [Hook](#hook).
 
 ## Installation
 
-Install `projj` globally.
+Install `@ying-bin/projj` globally.
 
 ```bash
-$ npm i projj -g
+$ npm i @ying-bin/projj -g
 ```
 
 ## Usage
