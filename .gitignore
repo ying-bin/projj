@@ -2,5 +2,3 @@
 coverage/
 cache.json
 .nyc_output/
-!test/fixtures/hook/.projj/cache.json
-!test/fixtures/multiple-directory/.projj/cache.json

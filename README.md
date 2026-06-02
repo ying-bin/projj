@@ -1,6 +1,6 @@
 # Projj
 
-Manage repository easily.
+Manage git repositories by host, owner, and project name.
 
 [![NPM version][npm-image]][npm-url]
 [![Release Status][release-image]][release-url]
@@ -15,39 +15,42 @@ Manage repository easily.
 
 ## Why?
 
-How do you manage git repository?
+If you clone many repositories by hand, duplicate names and scattered folders become annoying quickly. Projj keeps repositories in a predictable structure:
 
-Maybe you create a directory and clone to it. However if you want to clone repository that has same name? Or Do something in every directory like `clean`?
-
-`Projj` provide a structure making it easy.
-
-```
+```text
 $BASE
 |- github.com
-|  `- popomore
+|  `- ying-bin
 |     `- projj
 `- gitlab.com
-   `- popomore
+   `- ying-bin
       `- projj
 ```
 
-And you can `DO` everything in repository by [Hook](#hook).
+It also lets you run configured hooks in one repository or across every cached repository.
 
-## Feature
+## Features
 
-- ✔︎ Add repository using `projj add`
-- ✔︎ Command Hook
-- ✘ Buildin Hook
-- ✔︎ Custom Hook
-- ✔︎ Run Hook in All Repositories
-- ✔︎ Git Support
+- Add repositories with `projj add`
+- Find repository paths with `projj find`
+- Import existing repositories
+- Sync cache entries with the filesystem
+- Run custom hooks locally or across all repositories
+- Use hook commands from `@ying-bin/projj-hooks`
+- Show git clone progress during `projj add`
 
 ## Installation
 
-Install `@ying-bin/projj` globally.
+Install Projj globally:
 
 ```bash
-$ npm i @ying-bin/projj -g
+npm i -g @ying-bin/projj
+```
+
+Optional built-in hook commands are published separately:
+
+```bash
+npm i -g @ying-bin/projj-hooks
 ```
 
 ## Usage
@@ -55,56 +58,90 @@ $ npm i @ying-bin/projj -g
 ### Initialize
 
 ```bash
-$ projj init
+projj init
 ```
 
-Set base directory which repositories will be cloned to, default is `~/projj`.
-
-You can change base directory in `~/.projj/config.json`.
+This creates `~/.projj/config.json`. The default base directory is `~/projj`.
 
 ### Add Repository
 
 ```bash
-$ projj add git@github.com:popomore/projj.git
+projj add git@github.com:ying-bin/projj.git
 ```
 
-it's just like `git clone`, but the repository will be cached by projj. You can find all repositories in `~/.projj/cache.json`
+The repository is cloned under the configured base directory and cached in `~/.projj/cache.json`.
 
-also support alias which could config at `alias` of `~/.projj/config.json`:
+Alias URLs are supported through the `alias` config:
 
 ```bash
-$ projj add github://popomore/projj
+projj add github://ying-bin/projj
 ```
 
-### Importing
-
-If you have some repositories in `~/code`, projj can import by `projj import ~/code`.
-
-Or projj can import repositories from `cache.json` when you change laptop by `projj import --cache`
+By default, `github://` expands to `https://github.com/`.
 
 ### Find Repository
 
-projj provide a easy way to find the location of your repositories.
-
 ```bash
-$ projj find [repo]
+projj find projj
 ```
 
-You can set `change_directory` in `~/.projj/config.json` to change directory automatically.
+When a repository is found, Projj copies a `cd <path>` command to your clipboard.
 
-### Sync
+If `change_directory` is set in `~/.projj/config.json`, Projj can ask the active macOS Terminal or iTerm window to change directory. On other platforms it falls back to copying the `cd` command.
 
-`projj sync` will check the repository in cache.json whether exists, the repository will be removed from cache if not exist.
+### Import Repositories
+
+Import repositories from an existing directory:
+
+```bash
+projj import ~/code
+```
+
+Recreate repositories from `~/.projj/cache.json`:
+
+```bash
+projj import --cache
+```
+
+### Sync Cache
+
+```bash
+projj sync
+```
+
+This removes cache entries whose repository directories no longer exist.
+
+## Configuration
+
+Projj stores configuration in `~/.projj/config.json`.
+
+Example:
+
+```json
+{
+  "base": "~/projj",
+  "change_directory": false,
+  "alias": {
+    "github://": "https://github.com/"
+  },
+  "hooks": {}
+}
+```
+
+`base` can also be an array. When multiple base directories are configured, Projj asks which one to use.
 
 ## Hook
 
-Hook is flexible when manage repositories.
+Hooks are shell commands configured in `~/.projj/config.json`.
 
-### Command Hook
+### Command Hooks
 
-When run command like `projj add`, hook will be run. `preadd` that run before `projj add`, and `postadd` that run after `projj add`.
+For `projj add`, Projj supports:
 
-Config hook in `~/.projj/config.json`
+- `preadd`
+- `postadd`
+
+Example:
 
 ```json
 {
@@ -114,23 +151,9 @@ Config hook in `~/.projj/config.json`
 }
 ```
 
-Then will show the content of the package of repository.
+### Custom Hooks
 
-**Only support `add` now**
-
-### Define Hook
-
-You can define own hook.
-
-```json
-{
-  "hooks": {
-    "hook_name": "command"
-  }
-}
-```
-
-For Example, define a hook to show package.
+Define a hook command:
 
 ```json
 {
@@ -140,37 +163,77 @@ For Example, define a hook to show package.
 }
 ```
 
-Then you can use `projj run show_package` to run the hook in current directory.
+Run it in the current directory:
 
-`Command` can be used in `$PATH`, so you can use global node_modules like `npm`.
+```bash
+projj run show_package
+```
+
+Run it in every cached repository:
+
+```bash
+projj runall show_package
+```
+
+### Built-in Hook Package
+
+Install:
+
+```bash
+npm i -g @ying-bin/projj-hooks
+```
+
+Then configure hook commands such as:
 
 ```json
 {
   "hooks": {
-    "npm_install": "npm install"
+    "clean": "projj_clean",
+    "dirty": "projj_dirty",
+    "git_config_user": "projj_git_config_user"
+  },
+  "clean": {
+    "node_modules": true,
+    "git": true
+  },
+  "git_config_user": {
+    "github.com": {
+      "name": "your name",
+      "email": "your email",
+      "signingkey": "your signingkey"
+    }
   }
 }
 ```
 
-### Write Hook
+Available hook commands include:
 
-Write a command
+- `projj_clean`
+- `projj_dirty`
+- `projj_git_config_user`
+- `projj_atom_project`
+- `projj_vscode_project_manager`
+
+### Write Your Own Hook
+
+Any command available in `$PATH` can be used as a hook, including Bash scripts, Node.js scripts, and globally installed npm binaries.
+
+Projj passes hook options through `PROJJ_HOOK_CONFIG`.
 
 ```js
-// clean
 #!/usr/bin/env node
 
 'use strict';
 
 const cp = require('child_process');
-const cwd = process.cwd();
-const config = JSON.parse(process.env.PROJJ_HOOK_CONFIG);
+const config = JSON.parse(process.env.PROJJ_HOOK_CONFIG || '{}');
+
 if (config.node_modules === true) {
   cp.spawn('rm', [ '-rf', 'node_modules' ]);
 }
 ```
 
-You can get `PROJJ_HOOK_CONFIG` from `projj` if you have defined in `~/.projj/config.json`.
+Configure it:
 
 ```json
 {
@@ -182,12 +245,6 @@ You can get `PROJJ_HOOK_CONFIG` from `projj` if you have defined in `~/.projj/co
   }
 }
 ```
-
-### Run Hook
-
-`projj run clean` in current directory.
-
-`projj runall clean` in every repositories from `cache.json`
 
 ## License
 
